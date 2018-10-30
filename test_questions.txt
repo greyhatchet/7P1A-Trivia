@@ -1,0 +1,5 @@
+MC; What is the square root of 1?; ('1', '2', '3', '-i');
+
+TF; Bulgaria is the capital of French Polynesia;
+
+MC; Go fuck yourself; ('tru', 'tru', 'tru', 'fuck u');
