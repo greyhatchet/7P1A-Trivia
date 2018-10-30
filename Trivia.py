@@ -144,10 +144,10 @@ def main():
     clock = pygame.time.Clock()
 
     # round 1
-    jeopardy = Jeopardy(screen, 'round1.jeopardy')
+    jeopardy = Jeopardy(screen, 'round1.txt')
 
     # round 2
-    #jeopardy = Jeopardy(screen, 'round2.jeopardy', 2)
+    #jeopardy = Jeopardy(screen, 'round2.txt', 2)
 
     quit = False
     while not quit:
