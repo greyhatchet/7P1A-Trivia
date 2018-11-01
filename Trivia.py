@@ -1,8 +1,27 @@
 import os, sys
 import pygame
 from pygame.locals import *
+import unittest
 
+#Unit test for the creation of player class
+class testPlayer(unittest.TestCase):
+    def setUp(self):
+        self.player = Player("1")
 
+    def testInits(self):
+        self.assertEqual(self.player.points, 0)
+        self.assertEqual(self.player.name, "1")
+
+# Class defining a Player, initializes with 0 points and user defined name
+class Player:
+    def __init__(self, name):
+        self.points = 0
+        self.name = name
+
+    def __str__(self):
+        return self.name
+
+# Class of Question, contains user defined attributes q and a
 class Question:
     def __init__(self, q, a):
         self.q = q
@@ -36,19 +55,24 @@ class Jeopardy:
         # load the questions
         self.loadQuestions(questionFile)
 
-        # create gameboard
+        # create gameboard w/ list of keys
         self.board.append(list(self.qm.keys()))
+
+        # append integer (100 * 1 * 6) to board list
         for p in range(100, 501, 100):
             self.board.append([p * round] * 6)
 
     def loadQuestions(self, filename):
         f = open(filename)
         lines = f.readlines()
+        # strip white spaces and split on colons, input as tuple into addQuestion function
         for line in lines:
             data = line.strip().split(':')
             self.addQuestion(*data)
 
     def addQuestion(self, category, points, q, a):
+        # checks if category key already in dictionary, if not add key ->
+        #value is dictionary w/ key points and value The question object
         if not category in self.qm.keys():
             self.qm[category] = {}
         self.qm[category][points] = Question(q, a)
