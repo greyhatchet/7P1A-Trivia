@@ -19,8 +19,8 @@ FACES:300:A prominent American civil rights leader who, along with Elizabeth Cad
 FACES:400:Recently deceased feminist author who wrote "The Feminine Mystique":Who is Betty Friedan?
 FACES:500:This wave of feminism largely focused on the inclusion of women in traditionally male-dominated areas.:What is 2nd wave feminism?
 NSBE:100:The acronym NSBE stands for this.:What is the National Society of Black Engineers?
-NSBE:200:NSBE holds it's meetings in these rooms.:What are the SAU Clark rooms?
-NSBE:300:NSBE holds it's weekly meetings on this day.:What is Thursday?
+NSBE:200:NSBE holds it's meetings in these rooms.:What is ETC 2.136 ?
+NSBE:300:NSBE holds it's weekly meetings on this day.:What is Tuesday?
 NSBE:400:Electrons flow in this manner.:What is 'negative to positive'?
 NSBE:500:NSBE membership is open to these groups.:What are all nationalities and majors?
 RITga:100:a:a
