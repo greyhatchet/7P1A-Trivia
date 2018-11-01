@@ -13,13 +13,16 @@ def gameLoop():
                 pygame.quit()
                 quit()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                quit()
+               quit()
             #elif event.type == pygame.MOUSEBUTTONDOWN:
                 #jeopardy.mouseClick(pygame.mouse.get_pos())
         pygame.display.update()
         clock.tick(60)
 
-startMenu()
-gameLoop()
+#while intro:
+    #startMenu()
+#hile playnum_screen:
+    #numPlayers()
+#gameLoop()
 pygame.quit()
 quit()

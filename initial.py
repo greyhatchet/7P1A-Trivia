@@ -1,4 +1,9 @@
 import pygame
+#from gameLoop import *
+
+player_number = 0
+intro = True
+playnum_screen = False
 
 pygame.init()
  
@@ -45,35 +50,52 @@ def message_display(text):
  
     time.sleep(2)
  
-    gameLoop()
 
 def startMenu():
+
+    global intro
     
-    intro = True
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+            
+    gameDisplay.fill(white)
+    largeText = pygame.font.Font('freesansbold.ttf', 100)
+    mediumText = pygame.font.Font('freesansbold.ttf', 50)
+    TextSurf, TextRect = text_objects("Trivia Game", largeText)
+    TextSurf2, TextRect2 = text_objects("Press 'Enter' to Start", mediumText)
+    TextRect.center = ((display_width/2),(display_height/2)-100)
+    TextRect2.center = ((display_width/2),(display_height/2))
+    gameDisplay.blit(TextSurf, TextRect)
+    gameDisplay.blit(TextSurf2, TextRect2)
 
-    while intro:
-        for event in pygame.event.get():
-            #print(event)
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    TextSurf3, TextRect3 = text_objects("Enter number of players", mediumText)
+    button("GO!",450,450,100,50,white,black,numPlayers)
+    button("Quit",650,450,100,50,red,black,quit)
 
-                
-        gameDisplay.fill(white)
-        largeText = pygame.font.Font('freesansbold.ttf', 100)
-        mediumText = pygame.font.Font('freesansbold.ttf', 50)
-        TextSurf, TextRect = text_objects("Trivia Game", largeText)
-        TextSurf2, TextRect2 = text_objects("Press 'Enter' to Start", mediumText)
-        TextRect.center = ((display_width/2),(display_height/2)-100)
-        TextRect2.center = ((display_width/2),(display_height/2))
-        gameDisplay.blit(TextSurf, TextRect)
-        gameDisplay.blit(TextSurf2, TextRect2)
+    pygame.display.update()
+    clock.tick(15)
 
-        button("GO!",450,450,100,50,white,black)#start)
-        button("Quit",650,450,100,50,red,black,quit)
 
-        pygame.display.update()
-        clock.tick(15)
+def numPlayers():
+    global player_number
+    global intro
+    global playnum_screen
+    intro = False
+    playnum_screen = True
+    gameDisplay.fill(white)
+    largeText = pygame.font.Font('freesansbold.ttf', 80)
+    TextSurf, TextRect = text_objects("Enter number of players", largeText)
+    TextRect.center = ((display_width/2),(display_height/2)-100)
+    gameDisplay.blit(TextSurf, TextRect)
+    pygame.display.update()
+
+
+#startMenu()
+while intro:
+    startMenu()
+while playnum_screen:
+    numPlayers()
+#gameLoop()
+pygame.quit()
+quit()
