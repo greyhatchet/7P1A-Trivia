@@ -29,7 +29,7 @@ class Player:
         return self.point
 
 
-category_list = ['test', 'test', 'test', 'test', 'test', 'test']
+category_list = ['test0', 'test1', 'test2', 'test3', 'test4', 'test5']
 num_questions = 6 # Number of questions per category
 
 class MCQuestion:
@@ -128,6 +128,9 @@ class Jeopardy:
     def loadQuestions(self, category):
         global num_questions
         new_q_info_list = readQuestion(category)
+        if category not in self.question_dict.keys():
+            self.question_dict[category] = {}
+
         for i in range(num_questions):
             new_question_info = new_q_info_list[i]
             new_question_score = (i+1) * 100
@@ -151,10 +154,11 @@ class Jeopardy:
             self.mode = GAMEBOARD
 
     def answerKeyed(self, active_player, ans_num):
-        correct_ans_num = self.curQ.getAnsNum()
-        if ans_num == correct_ans_num:
-            active_player.addPoints(self.curQ.getValue())
-        self.mode = ANSWER
+        if self.mode == QUESTION:
+            correct_ans_num = self.curQ.getAnsNum()
+            if ans_num == correct_ans_num:
+                active_player.addPoints(self.curQ.getValue())
+            self.mode = ANSWER
 
     def askQuestion(self, col, row):
         if row != 0:
@@ -238,10 +242,12 @@ def main():
 
     # round 1
     jeopardy = Jeopardy(screen, category_list)
+    player_one = Player('Testie Magee')
 
     # round 2
     #jeopardy = Jeopardy(screen, 'round2.txt', 2)
 
+    answer_keys = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4]
     quit = False
     while not quit:
         clock.tick(60)
@@ -252,6 +258,9 @@ def main():
                 quit = True
             elif event.type == MOUSEBUTTONDOWN:
                 jeopardy.mouseClick(pygame.mouse.get_pos())
+            elif event.type == KEYDOWN and event.key in answer_keys:
+                answer_index = int(event.key) - 48 - 1
+                jeopardy.answerKeyed(player_one, answer_index)
         screen.blit(background, (0, 0))
         jeopardy.draw()
         pygame.display.flip()
