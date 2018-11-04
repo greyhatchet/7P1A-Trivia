@@ -18,31 +18,43 @@ class Player:
         self.points = 0
         self.name = name
 
+# When player object printed, name returned
     def __str__(self):
         return self.name
 
-# Class of Question, contains user defined attributes q and a
+# Class of Question, contains user defined attributes q(question string) and a (answer string)
 class Question:
     def __init__(self, q, a):
         self.q = q
         self.a = a
 
+#When Question object printed, return Q: "Question"
+#                                     A: "Answer"
     def __str__(self):
         return "Q: %s\nA: %s" % (self.q, self.a)
 
 
+#Initialize tuples for use as screen colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
+#Initialize variables used to notify program of current game state
 GAMEBOARD = 'gameboard'
 QUESTION = 'question'
 ANSWER = 'answer'
 
 
 class Jeopardy:
+
+    # qm attribute (dictionary storing *** )
     qm = {}
+
+    # board attribute (list storing the keys to qm dictionary)
     board = []
+
+    # Current mode is displaying the gameboard
     mode = GAMEBOARD
+
     curQ = None
 
     def __init__(self, screen, questionFile, round=1):
@@ -52,49 +64,71 @@ class Jeopardy:
         self.smallFont = pygame.font.Font(None, 48)
         self.bigFont = pygame.font.Font(None, 80)
 
-        # load the questions
+        # load questions from text file
         self.loadQuestions(questionFile)
 
         # create gameboard w/ list of keys
         self.board.append(list(self.qm.keys()))
 
-        # append integer (100 * 1 * 6) to board list
+        # appends list w/ length 6 of current point * round # total to board 
         for p in range(100, 501, 100):
             self.board.append([p * round] * 6)
 
     def loadQuestions(self, filename):
         f = open(filename)
         lines = f.readlines()
-        # strip white spaces and split on colons, input as tuple into addQuestion function
+        # strip white spaces and split on colons
         for line in lines:
             data = line.strip().split(':')
+        # input category, points, question, and answer as tuple into addQuestion function
             self.addQuestion(*data)
 
     def addQuestion(self, category, points, q, a):
-        # checks if category key already in dictionary, if not add key ->
-        #value is dictionary w/ key points and value The question object
+
+        # check if category key in dictionary
         if not category in self.qm.keys():
+
+        #if not, append category input as key into list and the value an empty dictionary
             self.qm[category] = {}
+
+        #assign second dictionary's key to the point variable, and the value to a question object 
         self.qm[category][points] = Question(q, a)
 
+
     def mouseClick(self, pos):
+        # if current mode is gameboard, print position of click (debugging purposes)
         if self.mode == GAMEBOARD:
             print(pos[0])
             print(pos[1])
+
+            #ask the appropriate question depending on the click position
             self.askQuestion(pos[0] / 133, pos[1] / 100)
+
+        #if looking at question & screen clicked, reveal answer (*** need to change for multiple choice ***)
         elif self.mode == QUESTION:
             self.mode = ANSWER
+
+        #if looking at answer & screen clicked, return to gameboard
         elif self.mode == ANSWER:
             self.mode = GAMEBOARD
 
     def askQuestion(self, col, row):
         q = None
+        # if valid screen position selected continue
         if row != 0:
+            # variable indexes to the key for the column chosen by click (CATEGORY)
             cat = self.board[0][int(col)]
+            # variable contains string with the appropriate point total for the selected question (POINTS)
             points = str(self.board[int(row)][int(col)])
+            # if valid screen position selected continue
             if points != '':
+                #indexes to current question object
                 self.curQ = self.qm[cat][points]
+
+                #label board location as used
                 self.board[int(row)][int(col)] = ''
+
+                #set current mode to question
                 self.mode = QUESTION
 
     def drawTextCentered(self, str, skiperoo=-75):
