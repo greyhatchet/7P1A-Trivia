@@ -99,8 +99,12 @@ class Jeopardy:
         # if current mode is gameboard
         if self.mode == GAMEBOARD:
 
-            #ask the appropriate question depending on the click position
-            self.askQuestion(pos[0] / 133, pos[1] / 100)
+            # Do not run askQuestion() if clicking category         
+            if pos[1] < 105: 
+                pass
+            # ask the appropriate question depending on the click position
+            else:
+                self.askQuestion(pos[0] / 133, pos[1] / 100)
 
         #if looking at question & screen clicked, reveal answer (*** need to change for multiple choice ***)
         elif self.mode == QUESTION:
