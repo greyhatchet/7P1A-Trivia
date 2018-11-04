@@ -36,7 +36,7 @@ class MCQuestion:
     def __init__(self, q, a_list, a_num, value):
         self.q = q
         self.a_list = a_list
-        self.a_num = a_num
+        self.a_num = int(a_num)
         self.value = value
 
     def __str__(self):
@@ -52,7 +52,8 @@ class MCQuestion:
         return self.value
 
     def getAnswer(self):
-        return self.a_list[self.a_num]
+        ans_str = str(self.a_num + 1) + ": " + self.a_list[self.a_num]
+        return ans_str
 
 class TFQuestion:
     def __init__(self, q, a, value):
@@ -71,8 +72,10 @@ class TFQuestion:
         return self.value
 
     def getAnswer(self):
-        return self.a
-
+        answer = "False"
+        if self.a == 1:
+            answer = "True"
+        return answer
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
