@@ -96,10 +96,8 @@ class Jeopardy:
 
 
     def mouseClick(self, pos):
-        # if current mode is gameboard, print position of click (debugging purposes)
+        # if current mode is gameboard
         if self.mode == GAMEBOARD:
-            print(pos[0])
-            print(pos[1])
 
             #ask the appropriate question depending on the click position
             self.askQuestion(pos[0] / 133, pos[1] / 100)
@@ -136,29 +134,37 @@ class Jeopardy:
 
         font = self.smallFont
 
-        # draw string and see if it is too long
+        # render string and compare length to screen width
         text = font.render(str, 1, WHITE)
 
-        # if string is too long, choperoo!
+        # if string too long, break up at first space in the last half of the string
         while text.get_rect().width > self.screen.get_rect().width:
             for c in range(int(choperoo / 2), choperoo):
                 if str[c] == ' ':
                     choperoo = c
                     break
-            # redraw string
+
+            # render first part of string
             text = font.render(str[:choperoo], 1, WHITE)
 
-        # find the centered rect for the drawing
+        # cr is first part of string get_rect() object
         cr = text.get_rect()
+
+        #center of text is placed in the center of the screen
         cr.center = self.screen.get_rect().center
+
+        #y coordinate shifted the value inputted (defaults to 75 pixels down)
         cr.y += skiperoo
-        # draw
+
+        # blit text in appropiate position
         self.screen.blit(text, cr)
 
+        #if string needed to be chopped, call function recursively w/ remainder of string
         if choperoo != len(str):
             self.drawTextCentered(str[choperoo:], skiperoo + cr.height)
 
     def draw(self):
+        #display functions depending on game state
         if self.mode == GAMEBOARD:
             self.drawBoard()
         elif self.mode == QUESTION:
@@ -167,33 +173,40 @@ class Jeopardy:
             self.drawTextCentered(self.curQ.a)
 
     def drawBoard(self):
+        #grid display
         xStart, xEnd = 0, 800
         yStart, yEnd = 0, 600
         xStep = xEnd // 6
         yStep = yEnd // 6
 
-        # draw the grid
-
-        print(xStep)
+        # Display black lines outlining grid in appropriate locations
         for x in range(xStart, xEnd + 1, xStep):
             pygame.draw.line(self.screen, BLACK, (x, yStart), (x, yEnd), 5)
         for y in range(yStart, yEnd + 1, yStep):
             pygame.draw.line(self.screen, BLACK, (xStart, y), (xEnd, y), 5)
 
-        # draw the labels
+        # display text in boxes
         for x in range(0, 6):
+
+            #display column (category) title
             text = self.smallFont.render(self.board[0][x], 1, WHITE)
             self.screen.blit(text, (x * xStep + 10, 25))
+
             for y in range(1, 6):
+                #display point total
                 text = self.bigFont.render(str(self.board[y][x]), 1, WHITE)
                 self.screen.blit(text, (x * xStep + 7, y * yStep + 10))
 
 
 def main():
+    # initialize pygame, screen, and caption
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
     pygame.display.set_caption('Jeopardy')
+
+    # mouse set to be monitored
     pygame.mouse.set_visible(1)
+    # fill background with blue and update (flip)
     background = pygame.Surface(screen.get_size())
     background = background.convert()
     background.fill((0, 0, 200))
@@ -201,22 +214,30 @@ def main():
     # allsprites = pygame.sprite.renderPlain((fist, chimp))
     clock = pygame.time.Clock()
 
-    # round 1
+    # initialize jeopardy class at round 1 & input file
     jeopardy = Jeopardy(screen, 'round1.txt')
 
     # round 2
     #jeopardy = Jeopardy(screen, 'round2.txt', 2)
 
+    #game loop
     quit = False
     while not quit:
+        #framerate
         clock.tick(60)
+
+        #event handler (X out and escape quit the game)
         for event in pygame.event.get():
             if event.type == QUIT:
                 quit = True
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 quit = True
+
+            # on mouse click, call mouseClick function to interpret column & point selection
             elif event.type == MOUSEBUTTONDOWN:
                 jeopardy.mouseClick(pygame.mouse.get_pos())
+
+        #blit background clean, call jeopardy draw function depending on game state, update display
         screen.blit(background, (0, 0))
         jeopardy.draw()
         pygame.display.flip()
