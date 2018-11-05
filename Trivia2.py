@@ -138,55 +138,77 @@ class Jeopardy:
         for i in range(len(category_list)):
             self.loadQuestions(category_list[i])
 
-        # create gameboard
+        # create gameboard w/ list of keys
         self.board.append(list(self.question_dict.keys()))
+
+        # appends list w/ length 6 of point totals to board (grid visualization) 
         for p in range(100, 501, 100):
             self.board.append([p] * 6)
 
     def loadQuestions(self, category):
         global num_questions
         new_q_info_list = readQuestion(category)
+        # check if category key in dictionary already
         if category not in self.question_dict.keys():
+            #if not, append category input as key into dictionary and the value an empty dictionary
             self.question_dict[category] = {}
 
         for i in range(num_questions):
+            #iterate through list of questions create appropriate question type objects w/ point values
             new_question_info = new_q_info_list[i]
             new_question_score = (i+1) * 100
             if new_question_info[0] == 'MC':
                 new_question = MCQuestion(new_question_info[1], new_question_info[2], new_question_info[3], new_question_score)
             elif new_question_info[0] == 'TF':
                 new_question = TFQuestion(new_question_info[1], new_question_info[2], new_question_score)
+            # set the dictionary key to the current question as it's score, and the value as the question object
             self.question_dict[category][new_question_score] = new_question
 
     def mouseClick(self, pos):
+        # checks game state upon click
         if self.mode == GAMEBOARD:
-            print(pos[0])
-            print(pos[1])
+            #position was printed for debugging purposes
+            #print(pos[0])
+            #print(pos[1])
+
             # Do not run askQuestion() if clicking category
             if pos[1] < 105:
                 pass
             else:
+                #if gameboard screen clicked on, go to correct location
                 self.askQuestion(pos[0] / 133, pos[1] / 100)
+
         elif self.mode == ANSWER:
             self.mode = GAMEBOARD
 
     def keyPressed(self, active_player, key_num):
         if self.mode == QUESTION:
+            # answer number for current question, check if input if the same
             correct_ans_num = self.curQ.getAnsNum()
             if key_num == correct_ans_num:
+
+                #if correct input entered, add points, and go to answer state
                 active_player.addPoints(self.curQ.getValue())
             self.mode = ANSWER
         elif self.mode == ANSWER:
+            #if in answer state and enter key hit, go to gameboard
             if key_num == -1:
                 self.mode = GAMEBOARD
 
     def askQuestion(self, col, row):
+        # if valid screen position selected continue
         if row != 0:
+             # variable indexes to the key for the column chosen by click (CATEGORY)
             cat = self.board[0][int(col)]
+            # variable contains string with the appropriate point total for the selected question (POINTS)
             points = int(row) * 100
+            # if valid screen position selected continue
             if points != 0:
+                #indexes to current question object
                 self.curQ = self.question_dict[cat][points]
+                #label board location as a used question
                 self.board[int(row)][int(col)] = ''
+                #set current state to question
                 self.mode = QUESTION
 
     def drawTextCentered(self, str, skiperoo=-75):
@@ -194,29 +216,37 @@ class Jeopardy:
 
         font = self.smallFont
 
-        # draw string and see if it is too long
+        # render string and compare length to screen width
         text = font.render(str, 1, WHITE)
 
-        # if string is too long, choperoo!
+         # if string too long, break up at first space in the last half of the string
         while text.get_rect().width > self.screen.get_rect().width:
             for c in range(int(choperoo / 2), choperoo):
                 if str[c] == ' ':
                     choperoo = c
                     break
-            # redraw string
+
+           # render first part of string
             text = font.render(str[:choperoo], 1, WHITE)
 
-        # find the centered rect for the drawing
+        # cr is first part of string get_rect() object
         cr = text.get_rect()
+
+        #center of text is placed in the center of the screen
         cr.center = self.screen.get_rect().center
+
+        #y coordinate shifted the value inputted (defaults to 75 pixels down)
         cr.y += skiperoo
-        # draw
+
+        # blit text in appropiate position
         self.screen.blit(text, cr)
 
+        #if string needed to be chopped, call function recursively w/ remainder of string
         if choperoo != len(str):
             self.drawTextCentered(str[choperoo:], skiperoo + cr.height)
 
     def draw(self):
+        #display functions depending on game state
         if self.mode == GAMEBOARD:
             self.drawBoard()
         elif self.mode == QUESTION:
@@ -227,34 +257,40 @@ class Jeopardy:
             self.drawTextCentered(self.curQ.getAnswer())
 
     def drawBoard(self):
+        #grid display
         xStart, xEnd = 0, 800
         yStart, yEnd = 0, 600
         xStep = xEnd // 6
         yStep = yEnd // 6
 
-        # draw the grid
-
-        print(xStep)
+        # Display black lines outlining grid in appropriate locations
         for x in range(xStart, xEnd + 1, xStep):
             pygame.draw.line(self.screen, BLACK, (x, yStart), (x, yEnd), 5)
         for y in range(yStart, yEnd + 1, yStep):
             pygame.draw.line(self.screen, BLACK, (xStart, y), (xEnd, y), 5)
 
-        # draw the labels
+        # display text in boxes
         for x in range(0, 6):
+
+            #display column (category) title
             text = self.smallFont.render(self.board[0][x], 1, WHITE)
             self.screen.blit(text, (x * xStep + 10, 25))
+
             for y in range(1, 6):
+                #display point total
                 text = self.bigFont.render(str(self.board[y][x]), 1, WHITE)
                 self.screen.blit(text, (x * xStep + 7, y * yStep + 10))
 
 
 def main():
     global category_list
+    # initialize pygame, screen, and caption
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
     pygame.display.set_caption('Jeopardy')
+    # mouse set to be monitored
     pygame.mouse.set_visible(1)
+    # fill background with blue and update (flip)
     background = pygame.Surface(screen.get_size())
     background = background.convert()
     background.fill((0, 0, 200))
@@ -262,7 +298,7 @@ def main():
     # allsprites = pygame.sprite.renderPlain((fist, chimp))
     clock = pygame.time.Clock()
 
-    # round 1
+    # initialize jeopardy class at round 1 & input file
     jeopardy = Jeopardy(screen, category_list)
     player_one = Player('Testie Magee')
 
@@ -270,14 +306,19 @@ def main():
     #jeopardy = Jeopardy(screen, 'round2.txt', 2)
 
     answer_keys = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4]
+    #game loop
     quit = False
     while not quit:
+        #framerate
         clock.tick(60)
+
+        #event handler (X out and escape quit the game)
         for event in pygame.event.get():
             if event.type == QUIT:
                 quit = True
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 quit = True
+            # on mouse click, call mouseClick function to interpret column & point selection
             elif event.type == MOUSEBUTTONDOWN:
                 jeopardy.mouseClick(pygame.mouse.get_pos())
             elif event.type == KEYDOWN and event.key in answer_keys:
@@ -286,6 +327,8 @@ def main():
             elif event.type == KEYDOWN and event.key == K_RETURN:
                 jeopardy.keyPressed(player_one, -1)
 
+        #blit background clean, call jeopardy draw function depending on game state, update display
+        screen.blit(background, (0, 0))
         screen.blit(background, (0, 0))
         jeopardy.draw()
         pygame.display.flip()
