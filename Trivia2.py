@@ -316,6 +316,8 @@ def main():
         for event in pygame.event.get():
             if event.type == QUIT:
                 quit = True
+                pygame.quit()
+                exit()
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 quit = True
             # on mouse click, call mouseClick function to interpret column & point selection

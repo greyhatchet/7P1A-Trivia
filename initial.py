@@ -1,4 +1,5 @@
 import pygame
+from Trivia2 import *
 #from gameLoop import *
 
 player_number = 0
@@ -112,6 +113,9 @@ def numPlayers():
     TextRect2.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
     gameDisplay.blit(TextSurf2, TextRect2)
+
+    button("Start",350,450,100,50,white,black,main)
+
     pygame.display.update()
     clock.tick(15)
 
