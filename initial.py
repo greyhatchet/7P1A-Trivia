@@ -8,8 +8,8 @@ playnum_screen = False
 pygame.init()
  
 infoObject = pygame.display.Info()
-display_width = infoObject.current_w - 100
-display_height = infoObject.current_h - 100
+display_width = 800 #infoObject.current_w - 100
+display_height = 600 #infoObject.current_h - 100
 
 black = (0,0,0)
 white = (255,255,255)
@@ -70,8 +70,8 @@ def startMenu():
     gameDisplay.blit(TextSurf, TextRect)
     gameDisplay.blit(TextSurf2, TextRect2)
 
-    button("GO!",450,450,100,50,white,black,numPlayers)
-    button("Quit",650,450,100,50,red,black,quit)
+    button("Enter",250,450,100,50,white,black,numPlayers)
+    button("Quit",450,450,100,50,red,black,quit)
 
     pygame.display.update()
     clock.tick(15)
@@ -83,12 +83,37 @@ def numPlayers():
     global playnum_screen
     intro = False
     playnum_screen = True
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_1:
+                player_number = 1
+                print("1")
+                #gameDisplay.blit(text_objects("1", pygame.font.Font('freesansbold.ttf', 50)))
+            elif event.key == pygame.K_2: 
+                player_number = 2      
+                print("2")     
+            elif event.key == pygame.K_3:
+                player_number = 3
+                print("3")
+            elif event.key == pygame.K_4:
+                player_number = 4
+                print("4")
+
+
     gameDisplay.fill(white)
-    largeText = pygame.font.Font('freesansbold.ttf', 80)
-    TextSurf, TextRect = text_objects("Enter number of players", largeText)
+    largeText = pygame.font.Font('freesansbold.ttf', 60)
+    mediumText = pygame.font.Font('freesansbold.ttf', 50)
+    TextSurf, TextRect = text_objects("Number of Players", largeText)
+    TextSurf2, TextRect2 = text_objects("Press '1-4'", mediumText)
     TextRect.center = ((display_width/2),(display_height/2)-100)
+    TextRect2.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
+    gameDisplay.blit(TextSurf2, TextRect2)
     pygame.display.update()
+    clock.tick(15)
 
 
 #startMenu()
