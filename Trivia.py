@@ -304,6 +304,8 @@ class Jeopardy:
             pygame.draw.line(self.screen, BLACK, (x, yStart), (x, yEnd), 5)
         for y in range(yStart, yEnd + 1, yStep):
             pygame.draw.line(self.screen, BLACK, (xStart, y), (xEnd, y), 5)
+        for i in range(0, 800, 200):
+            pygame.draw.line(self.screen, BLACK, (i, 600), (i, 700), 5)
 
         # display text in boxes
         for x in range(0, 6):
@@ -316,6 +318,17 @@ class Jeopardy:
                 #display point total
                 text = self.bigFont.render(str(self.board[y][x]), 1, WHITE)
                 self.screen.blit(text, (x * xStep + 7, y * yStep + 10))
+        
+        # display player scores
+        for p in range(0, number_players):
+            # active player color
+            if p == active_player_num:
+                text = self.smallFont.render("Player " + str(p), 1, RED)
+            else:
+                text = self.smallFont.render("Player " + str(p), 1, WHITE)
+            score = self.smallFont.render(str(player_list[p].getScore()), 1, WHITE)
+            self.screen.blit(text, ((p * 200) + 30, 610))
+            self.screen.blit(score, ((p * 200) + 30, 650))
 
     def getCurQType(self):
         return self.curQ.getType()
