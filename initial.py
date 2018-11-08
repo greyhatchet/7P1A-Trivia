@@ -7,14 +7,16 @@ playnum_screen = False
 
 pygame.init()
  
-infoObject = pygame.display.Info()
+# size of display screen
 display_width = 800 
 display_height = 700 
 
+# available colors
 black = (0,0,0)
 white = (255,255,255)
 red = (255,0,0)
 
+# sets display, caption, and clock
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('Trivia Game')
 clock = pygame.time.Clock()
@@ -52,14 +54,14 @@ def message_display(text):
  
 
 def startMenu():
-
     global intro
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             quit()
-            
+    
+    # clears display, blits title
     gameDisplay.fill(white)
     largeText = pygame.font.Font('freesansbold.ttf', 100)
     mediumText = pygame.font.Font('freesansbold.ttf', 50)
@@ -67,6 +69,7 @@ def startMenu():
     TextRect.center = ((display_width/2),(display_height/2)-100)
     gameDisplay.blit(TextSurf, TextRect)
 
+    # displays buttons that route to different functions
     button("Enter",250,450,100,50,white,black,numPlayers)
     button("Quit",450,450,100,50,red,black,quit)
 
@@ -82,7 +85,7 @@ def numPlayers():
     intro = False
     playnum_screen = True
     
-
+    # displays title on screen 
     gameDisplay.fill(white)
     largeText = pygame.font.Font('freesansbold.ttf', 60)
     mediumText = pygame.font.Font('freesansbold.ttf', 50)
@@ -90,6 +93,9 @@ def numPlayers():
     TextRect.center = ((display_width/2),(display_height/2)-100)
     gameDisplay.blit(TextSurf, TextRect)
 
+    # assigns functions with keys 
+    # quit, ends game
+    # 1-4 assigns global variable player_number
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -108,10 +114,13 @@ def numPlayers():
                 player_number = 4
                 print("4")
             setNumPlayers(player_number)
-            
+    
+    # displays number of players on screen 
     TextSurf2, TextRect2 = text_objects("Number of Players: "+str(player_number), mediumText)
     TextRect2.center = ((display_width/2),(display_height/2)-30)     
     gameDisplay.blit(TextSurf2, TextRect2)
+
+    # displays button that routes to game
     button("Start",350,450,100,50,white,black,main)
 
     pygame.display.update()
