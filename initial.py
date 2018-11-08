@@ -65,11 +65,8 @@ def startMenu():
     largeText = pygame.font.Font('freesansbold.ttf', 100)
     mediumText = pygame.font.Font('freesansbold.ttf', 50)
     TextSurf, TextRect = text_objects("Trivia Game", largeText)
-    TextSurf2, TextRect2 = text_objects("Press 'Enter' to Start", mediumText)
     TextRect.center = ((display_width/2),(display_height/2)-100)
-    TextRect2.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
-    gameDisplay.blit(TextSurf2, TextRect2)
 
     button("Enter",250,450,100,50,white,black,numPlayers)
     button("Quit",450,450,100,50,red,black,quit)
@@ -77,6 +74,7 @@ def startMenu():
     pygame.display.update()
     clock.tick(15)
 
+player_number = 1
 
 def numPlayers():
     global player_number
@@ -84,6 +82,15 @@ def numPlayers():
     global playnum_screen
     intro = False
     playnum_screen = True
+    
+
+    gameDisplay.fill(white)
+    largeText = pygame.font.Font('freesansbold.ttf', 60)
+    mediumText = pygame.font.Font('freesansbold.ttf', 50)
+    TextSurf, TextRect = text_objects("Press '1-4'", largeText)
+    TextRect.center = ((display_width/2),(display_height/2)-100)
+    gameDisplay.blit(TextSurf, TextRect)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -92,7 +99,6 @@ def numPlayers():
             if event.key == pygame.K_1:
                 player_number = 1
                 print("1")
-                #gameDisplay.blit(text_objects("1", pygame.font.Font('freesansbold.ttf', 50)))
             elif event.key == pygame.K_2: 
                 player_number = 2      
                 print("2")     
@@ -102,18 +108,10 @@ def numPlayers():
             elif event.key == pygame.K_4:
                 player_number = 4
                 print("4")
-
-
-    gameDisplay.fill(white)
-    largeText = pygame.font.Font('freesansbold.ttf', 60)
-    mediumText = pygame.font.Font('freesansbold.ttf', 50)
-    TextSurf, TextRect = text_objects("Number of Players", largeText)
-    TextSurf2, TextRect2 = text_objects("Press '1-4'", mediumText)
-    TextRect.center = ((display_width/2),(display_height/2)-100)
-    TextRect2.center = ((display_width/2),(display_height/2))
-    gameDisplay.blit(TextSurf, TextRect)
+                
+    TextSurf2, TextRect2 = text_objects("Number of Players: "+str(player_number), mediumText)
+    TextRect2.center = ((display_width/2),(display_height/2)-30)     
     gameDisplay.blit(TextSurf2, TextRect2)
-
     button("Start",350,450,100,50,white,black,main)
 
     pygame.display.update()
