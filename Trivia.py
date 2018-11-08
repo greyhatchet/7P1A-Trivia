@@ -25,6 +25,8 @@ TF_answer_keys = [pygame.K_1, pygame.K_2]
 
 # Set number of players from input at initial.py
 number_players = 0
+player_list = []
+active_player_num = 0
 def setNumPlayers(num_players):
     global number_players
     number_players = num_players
@@ -59,7 +61,7 @@ class Player:
             self.points = 0
 
     def getScore(self):
-        return self.point
+        return self.points
 
 # Class for multiple choice questions
 class MCQuestion:
@@ -207,6 +209,8 @@ class Jeopardy:
             self.mode = GAMEBOARD
 
     def keyPressed(self, active_player, key_num):
+        global active_player_num
+        global number_players
         if self.mode == QUESTION:
             # answer number for current question, check if input if the same
             correct_ans_num = self.curQ.getAnsNum()
@@ -214,6 +218,10 @@ class Jeopardy:
 
                 #if correct input entered, add points, and go to answer state
                 active_player.addPoints(self.curQ.getValue())
+            if active_player_num < number_players - 1:
+                active_player_num += 1
+            else:
+                active_player_num = 0
             self.mode = ANSWER
         elif self.mode == ANSWER:
             #if in answer state and enter key hit, go to gameboard
@@ -315,6 +323,8 @@ def main():
     global MC_answer_keys
     global TF_answer_keys
     global number_players
+    global player_list
+    global active_player_num
     # initialize pygame, screen, and caption
     pygame.init()
     screen = pygame.display.set_mode((800, 700))
@@ -331,17 +341,16 @@ def main():
 
     # initialize jeopardy class at round 1 & input file
     jeopardy = Jeopardy(screen, category_list)
-    player_one = Player('Testie Magee')
-
-    # round 2
-    #jeopardy = Jeopardy(screen, 'round2.txt', 2)
+    for i in range(number_players):
+        player_list.append(Player(str(i)))
 
     #game loop
     quit = False
     while not quit:
         #framerate
         clock.tick(60)
-
+        print("Active: Player " + str(active_player_num) + " Score: " + str(player_list[active_player_num].getScore()))
+        
         #event handler (X out and escape quit the game)
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -355,12 +364,12 @@ def main():
                 jeopardy.mouseClick(pygame.mouse.get_pos())
             elif event.type == KEYDOWN and jeopardy.getCurQType() == 'MC' and event.key in MC_answer_keys:
                 answer_index = int(event.key) - 48 - 1
-                jeopardy.keyPressed(player_one, answer_index)
+                jeopardy.keyPressed(player_list[active_player_num], answer_index)
             elif event.type == KEYDOWN and jeopardy.getCurQType() == 'TF' and event.key in TF_answer_keys:
                 answer_index = int(event.key) - 48 - 1
-                jeopardy.keyPressed(player_one, answer_index)
+                jeopardy.keyPressed(player_list[active_player_num], answer_index)
             elif event.type == KEYDOWN and event.key == K_RETURN:
-                jeopardy.keyPressed(player_one, -1)
+                jeopardy.keyPressed(player_list[active_player_num], -1)
 
         #blit background clean, call jeopardy draw function depending on game state, update display
         screen.blit(background, (0, 0))
