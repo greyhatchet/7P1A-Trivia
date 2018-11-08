@@ -184,12 +184,13 @@ class Jeopardy:
     def mouseClick(self, pos):
         # checks game state upon click
         if self.mode == GAMEBOARD:
+            
             #position was printed for debugging purposes
             #print(pos[0])
             #print(pos[1])
 
             # Do not run askQuestion() if clicking category
-            if pos[1] < 105:
+            if pos[1] < 105 or pos[1] > 600:
                 pass
             else:
                 #if gameboard screen clicked on, go to correct location
