@@ -42,13 +42,13 @@ def button(msg,x,y,w,h,ic,ac,action=None):
     else:
         pygame.draw.rect(gameDisplay, ic,(x,y,w,h))
 
-    smallText = pygame.font.SysFont("freesansbold.ttf",20)
+    smallText = pygame.font.Font("mago1.ttf",20)
     textSurf, textRect = text_objects(msg, smallText)
     textRect.center = ( (x+(w/2)), (y+(h/2)) )
     gameDisplay.blit(textSurf, textRect)
 
 def message_display(text):
-    largeText = pygame.font.Font('freesansbold.ttf',115)
+    largeText = pygame.font.Font('mago3.ttf',115)
     TextSurf, TextRect = text_objects(text, largeText)
     TextRect.center = ((display_width/2),(display_height/2))
     gameDisplay.blit(TextSurf, TextRect)
@@ -68,10 +68,10 @@ def startMenu():
     
     # clears display, blits title
     gameDisplay.fill(pink)
-    largeText = pygame.font.Font('freesansbold.ttf', 100)
-    mediumText = pygame.font.Font('freesansbold.ttf', 50)
+    largeText = pygame.font.Font('mago3.ttf', 100)
+    mediumText = pygame.font.Font('mago3.ttf', 50)
     TextSurf, TextRect = text_objects("Trivia Game", largeText)
-    TextRect.center = ((display_width/2),(display_height/2)-100)
+    TextRect.center = ((display_width/2),(display_height/2)-50)
     gameDisplay.blit(TextSurf, TextRect)
 
     # displays buttons that route to different functions
@@ -92,8 +92,8 @@ def numPlayers():
     
     # displays title on screen 
     gameDisplay.fill(pink)
-    largeText = pygame.font.Font('freesansbold.ttf', 60)
-    mediumText = pygame.font.Font('freesansbold.ttf', 50)
+    largeText = pygame.font.Font('mago3.ttf', 60)
+    mediumText = pygame.font.Font('mago3.ttf', 50)
     TextSurf, TextRect = text_objects("Press '1-4'", largeText)
     TextRect.center = ((display_width/2),(display_height/2)-100)
     gameDisplay.blit(TextSurf, TextRect)
