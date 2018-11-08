@@ -21,6 +21,12 @@ pink = (255,192,203)
 lavender = (221,160,221)
 red = (205,92,92)
 
+'''
+    Fonts used from magofonts: mago1, mago3
+    Fonts attributed to: magodev
+    https://magodev.itch.io/
+'''
+
 # sets display, caption, and clock
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('Trivia Game')
