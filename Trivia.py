@@ -35,15 +35,6 @@ def setNumPlayers(num_players):
     number_players = num_players
 
 
-#Unit test for the creation of player class
-class testPlayer(unittest.TestCase):
-    def setUp(self):
-        self.player = Player("1")
-
-    def testInits(self):
-        self.assertEqual(self.player.points, 0)
-        self.assertEqual(self.player.name, "1")
-
 # Class defining a Player, initializes with 0 points and user defined name
 class Player:
     def __init__(self, name):
