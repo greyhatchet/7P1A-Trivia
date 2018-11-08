@@ -1,7 +1,27 @@
 import os, sys
 import pygame
 from pygame.locals import *
+from question_reader import *
 import unittest
+
+# List of categories, used for question loading via question_reader.py
+category_list = ['test0', 'test1', 'test2', 'test3', 'test4', 'test5']
+num_questions = 6 # Number of questions per category
+
+# Initialize tuples for use as screen colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+
+# Constants used to track current game mode for determining what to display
+GAMEBOARD = 'gameboard'
+QUESTION = 'question'
+ANSWER = 'answer'
+
+# Allowed answer keys for each type of question
+MC_answer_keys = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4]
+TF_answer_keys = [pygame.K_1, pygame.K_2]
 
 #Unit test for the creation of player class
 class testPlayer(unittest.TestCase):
@@ -18,119 +38,194 @@ class Player:
         self.points = 0
         self.name = name
 
-# When player object printed, name returned
+    # When player object printed, name returned
     def __str__(self):
         return self.name
 
-# Class of Question, contains user defined attributes q(question string) and a (answer string)
-class Question:
-    def __init__(self, q, a):
-        self.q = q
-        self.a = a
+    def addPoints(self, score):
+        self.points += score
 
-#When Question object printed, return Q: "Question"
-#                                     A: "Answer"
+    def losePoints(self, score):
+        if self.points > score:
+            self.points -= score
+        else:
+            self.points = 0
+
+    def getScore(self):
+        return self.point
+
+# Class for multiple choice questions
+class MCQuestion:
+    def __init__(self, q, a_list, a_num, value):
+        self.q = q # Question string
+        self.a_list = a_list # Tuple of answer strings
+        self.a_num = int(a_num) # Index of correct answer in a_list tuple
+        self.value = value # Point value of question
+
+    # str() was previously used for displaying question but due to issues w/ drawTextCentered
+    # it has been deprecated in favor of getQuestionText()
     def __str__(self):
-        return "Q: %s\nA: %s" % (self.q, self.a)
+        self_str = "Q: " + self.q + "\n\n"
+        for i in range(len(self.a_list)):
+            self_str += str(i+1) + ": " + self.a_list[i] + "\n"
+        return self_str
+
+    # Returns list containing question string and answer strings, iterated
+    # through when displaying question using drawTextCentered
+    def getQuestionText(self):
+        self_text_list = []
+        self_text_list.append(self.q)
+        for i in range(len(self.a_list)):
+            self_text_list.append(str(i+1) + ": " + self.a_list[i])
+        return self_text_list
+
+    def getAnsNum(self):
+        return self.a_num
+
+    def getValue(self):
+        return self.value
+
+    # Returns string of correct answer and its index for display on game board
+    def getAnswer(self):
+        ans_str = str(self.a_num + 1) + ": " + self.a_list[self.a_num]
+        return ans_str
+
+    def getType(self):
+        return 'MC'
 
 
-#Initialize tuples for use as screen colors
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
+# Class for true/false questions
+class TFQuestion:
+    def __init__(self, q, a, value):
+        self.q = q # Question string
+        self.a = a # Int value of answer (False = 0, True = 1 by convention)
+        self.value = value # Point value of question
 
-#Initialize variables used to notify program of current game state
-GAMEBOARD = 'gameboard'
-QUESTION = 'question'
-ANSWER = 'answer'
+    # str() was previously used for displaying question but due to issues w/ drawTextCentered
+    # it has been deprecated in favor of getQuestionText()
+    def __str__(self):
+        self_str = "Q: " + self.q + "\n1: True\n2: False"
+        return self_str
+
+    # Returns list containing question string and answer strings, iterated
+    # through when displaying question using drawTextCentered
+    def getQuestionText(self):
+        self_text_list = []
+        self_text_list.append(self.q)
+        self_text_list.append("1: False")
+        self_text_list.append("2: True")
+        return self_text_list
+
+    def getAnsNum(self):
+        return self.a
+
+    def getValue(self):
+        return self.value
+
+    # Returns string of answer for displaying on board
+    def getAnswer(self):
+        answer = "False"
+        if self.a == 1:
+            answer = "True"
+        return answer
+
+    def getType(self):
+        return 'TF'
 
 
 class Jeopardy:
-
-    # qm attribute (dictionary storing *** )
-    qm = {}
-
-    # board attribute (list storing the keys to qm dictionary)
+    # Question_dict structure is as follows:
+    # question_dict = {category name:category_questions}; category_questions = {number of points:question}
+    # The questions that are values are MCQuestion or TFQuestion objects
+    question_dict = {}
+    # Board list is used for display; 0th index is list of category names, rest of indices are list of point values
+    # E.g. board = [['cat1', ..., 'cat6'],[100, ..., 100],...,[500, ..., 500]]
     board = []
-
-    # Current mode is displaying the gameboard
     mode = GAMEBOARD
+    curQ = None # Stores current question object
 
-    curQ = None
-
-    def __init__(self, screen, questionFile, round=1):
+    def __init__(self, screen, category_list):
         self.screen = screen
 
         # load fonts
         self.smallFont = pygame.font.Font(None, 48)
         self.bigFont = pygame.font.Font(None, 80)
 
-        # load questions from text file
-        self.loadQuestions(questionFile)
+        # load the questions
+        for i in range(len(category_list)):
+            self.loadQuestions(category_list[i])
 
         # create gameboard w/ list of keys
-        self.board.append(list(self.qm.keys()))
+        self.board.append(list(self.question_dict.keys()))
 
-        # appends list w/ length 6 of current point * round # total to board 
+        # appends list w/ length 6 of point totals to board (grid visualization) 
         for p in range(100, 501, 100):
-            self.board.append([p * round] * 6)
+            self.board.append([p] * 6)
 
-    def loadQuestions(self, filename):
-        f = open(filename)
-        lines = f.readlines()
-        # strip white spaces and split on colons
-        for line in lines:
-            data = line.strip().split(':')
-        # input category, points, question, and answer as tuple into addQuestion function
-            self.addQuestion(*data)
+    def loadQuestions(self, category):
+        global num_questions
+        new_q_info_list = readQuestion(category)
+        # check if category key in dictionary already
+        if category not in self.question_dict.keys():
+            #if not, append category input as key into dictionary and the value an empty dictionary
+            self.question_dict[category] = {}
 
-    def addQuestion(self, category, points, q, a):
-
-        # check if category key in dictionary
-        if not category in self.qm.keys():
-
-        #if not, append category input as key into list and the value an empty dictionary
-            self.qm[category] = {}
-
-        #assign second dictionary's key to the point variable, and the value to a question object 
-        self.qm[category][points] = Question(q, a)
-
+        for i in range(num_questions):
+            #iterate through list of questions create appropriate question type objects w/ point values
+            new_question_info = new_q_info_list[i]
+            new_question_score = (i+1) * 100
+            if new_question_info[0] == 'MC':
+                new_question = MCQuestion(new_question_info[1], new_question_info[2], int(new_question_info[3]), new_question_score)
+            elif new_question_info[0] == 'TF':
+                new_question = TFQuestion(new_question_info[1], int(new_question_info[2]), new_question_score)
+            # set the dictionary key to the current question as it's score, and the value as the question object
+            self.question_dict[category][new_question_score] = new_question
 
     def mouseClick(self, pos):
-        # if current mode is gameboard
+        # checks game state upon click
         if self.mode == GAMEBOARD:
+            #position was printed for debugging purposes
+            #print(pos[0])
+            #print(pos[1])
 
-            # Do not run askQuestion() if clicking category         
-            if pos[1] < 105: 
+            # Do not run askQuestion() if clicking category
+            if pos[1] < 105:
                 pass
-            # ask the appropriate question depending on the click position
             else:
+                #if gameboard screen clicked on, go to correct location
                 self.askQuestion(pos[0] / 133, pos[1] / 100)
 
-        #if looking at question & screen clicked, reveal answer (*** need to change for multiple choice ***)
-        elif self.mode == QUESTION:
-            self.mode = ANSWER
-
-        #if looking at answer & screen clicked, return to gameboard
         elif self.mode == ANSWER:
             self.mode = GAMEBOARD
 
+    def keyPressed(self, active_player, key_num):
+        if self.mode == QUESTION:
+            # answer number for current question, check if input if the same
+            correct_ans_num = self.curQ.getAnsNum()
+            if key_num == correct_ans_num:
+
+                #if correct input entered, add points, and go to answer state
+                active_player.addPoints(self.curQ.getValue())
+            self.mode = ANSWER
+        elif self.mode == ANSWER:
+            #if in answer state and enter key hit, go to gameboard
+            if key_num == -1:
+                self.mode = GAMEBOARD
+
     def askQuestion(self, col, row):
-        q = None
         # if valid screen position selected continue
         if row != 0:
-            # variable indexes to the key for the column chosen by click (CATEGORY)
+             # variable indexes to the key for the column chosen by click (CATEGORY)
             cat = self.board[0][int(col)]
             # variable contains string with the appropriate point total for the selected question (POINTS)
-            points = str(self.board[int(row)][int(col)])
+            points = int(row) * 100
             # if valid screen position selected continue
-            if points != '':
+            if points != 0:
                 #indexes to current question object
-                self.curQ = self.qm[cat][points]
-
-                #label board location as used
+                self.curQ = self.question_dict[cat][points]
+                #label board location as a used question
                 self.board[int(row)][int(col)] = ''
-
-                #set current mode to question
+                #set current state to question
                 self.mode = QUESTION
 
     def drawTextCentered(self, str, skiperoo=-75):
@@ -141,14 +236,14 @@ class Jeopardy:
         # render string and compare length to screen width
         text = font.render(str, 1, WHITE)
 
-        # if string too long, break up at first space in the last half of the string
+         # if string too long, break up at first space in the last half of the string
         while text.get_rect().width > self.screen.get_rect().width:
             for c in range(int(choperoo / 2), choperoo):
                 if str[c] == ' ':
                     choperoo = c
                     break
 
-            # render first part of string
+           # render first part of string
             text = font.render(str[:choperoo], 1, WHITE)
 
         # cr is first part of string get_rect() object
@@ -172,12 +267,14 @@ class Jeopardy:
         if self.mode == GAMEBOARD:
             self.drawBoard()
         elif self.mode == QUESTION:
-            self.drawTextCentered(self.curQ.q)
+            new_text_list = self.curQ.getQuestionText()
+            for i in range(len(new_text_list)):
+                self.drawTextCentered(new_text_list[i], -75 + (i * 40))
         elif self.mode == ANSWER:
-            self.drawTextCentered(self.curQ.a)
+            self.drawTextCentered(self.curQ.getAnswer())
 
     def drawBoard(self):
-        #grid display
+        # Grid display
         xStart, xEnd = 0, 800
         yStart, yEnd = 0, 600
         xStep = xEnd // 6
@@ -201,13 +298,18 @@ class Jeopardy:
                 text = self.bigFont.render(str(self.board[y][x]), 1, WHITE)
                 self.screen.blit(text, (x * xStep + 7, y * yStep + 10))
 
+    def getCurQType(self):
+        return self.curQ.getType()
+
 
 def main():
+    global category_list
+    global MC_answer_keys
+    global TF_answer_keys
     # initialize pygame, screen, and caption
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode((800, 700))
     pygame.display.set_caption('Jeopardy')
-
     # mouse set to be monitored
     pygame.mouse.set_visible(1)
     # fill background with blue and update (flip)
@@ -219,7 +321,8 @@ def main():
     clock = pygame.time.Clock()
 
     # initialize jeopardy class at round 1 & input file
-    jeopardy = Jeopardy(screen, 'round1.txt')
+    jeopardy = Jeopardy(screen, category_list)
+    player_one = Player('Testie Magee')
 
     # round 2
     #jeopardy = Jeopardy(screen, 'round2.txt', 2)
@@ -234,14 +337,24 @@ def main():
         for event in pygame.event.get():
             if event.type == QUIT:
                 quit = True
+                pygame.quit()
+                exit()
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 quit = True
-
             # on mouse click, call mouseClick function to interpret column & point selection
             elif event.type == MOUSEBUTTONDOWN:
                 jeopardy.mouseClick(pygame.mouse.get_pos())
+            elif event.type == KEYDOWN and jeopardy.getCurQType() == 'MC' and event.key in MC_answer_keys:
+                answer_index = int(event.key) - 48 - 1
+                jeopardy.keyPressed(player_one, answer_index)
+            elif event.type == KEYDOWN and jeopardy.getCurQType() == 'TF' and event.key in TF_answer_keys:
+                answer_index = int(event.key) - 48 - 1
+                jeopardy.keyPressed(player_one, answer_index)
+            elif event.type == KEYDOWN and event.key == K_RETURN:
+                jeopardy.keyPressed(player_one, -1)
 
         #blit background clean, call jeopardy draw function depending on game state, update display
+        screen.blit(background, (0, 0))
         screen.blit(background, (0, 0))
         jeopardy.draw()
         pygame.display.flip()

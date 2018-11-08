@@ -1,5 +1,5 @@
 import pygame
-from Trivia2 import *
+from Trivia import *
 #from gameLoop import *
 
 player_number = 0
@@ -10,7 +10,7 @@ pygame.init()
  
 infoObject = pygame.display.Info()
 display_width = 800 #infoObject.current_w - 100
-display_height = 600 #infoObject.current_h - 100
+display_height = 700 #infoObject.current_h - 100
 
 black = (0,0,0)
 white = (255,255,255)
