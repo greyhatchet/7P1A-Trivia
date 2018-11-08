@@ -1,6 +1,5 @@
 import pygame
 from Trivia import *
-#from gameLoop import *
 
 player_number = 0
 intro = True
@@ -9,8 +8,8 @@ playnum_screen = False
 pygame.init()
  
 infoObject = pygame.display.Info()
-display_width = 800 #infoObject.current_w - 100
-display_height = 700 #infoObject.current_h - 100
+display_width = 800 
+display_height = 700 
 
 black = (0,0,0)
 white = (255,255,255)
@@ -108,7 +107,8 @@ def numPlayers():
             elif event.key == pygame.K_4:
                 player_number = 4
                 print("4")
-                
+            setNumPlayers(player_number)
+            
     TextSurf2, TextRect2 = text_objects("Number of Players: "+str(player_number), mediumText)
     TextRect2.center = ((display_width/2),(display_height/2)-30)     
     gameDisplay.blit(TextSurf2, TextRect2)
@@ -118,11 +118,10 @@ def numPlayers():
     clock.tick(15)
 
 
-#startMenu()
 while intro:
     startMenu()
 while playnum_screen:
     numPlayers()
-#gameLoop()
+
 pygame.quit()
 quit()
