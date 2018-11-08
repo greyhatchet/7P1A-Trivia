@@ -13,6 +13,9 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
+hardcore_blue = (0, 0, 200)
+blue = (72,61,139)
+
 
 # Constants used to track current game mode for determining what to display
 GAMEBOARD = 'gameboard'
@@ -334,7 +337,7 @@ def main():
     # fill background with blue and update (flip)
     background = pygame.Surface(screen.get_size())
     background = background.convert()
-    background.fill((0, 0, 200))
+    background.fill(blue)
     pygame.display.flip()
     # allsprites = pygame.sprite.renderPlain((fist, chimp))
     clock = pygame.time.Clock()

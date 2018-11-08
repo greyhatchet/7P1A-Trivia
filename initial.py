@@ -14,7 +14,12 @@ display_height = 700
 # available colors
 black = (0,0,0)
 white = (255,255,255)
-red = (255,0,0)
+#red = (255,0,0)
+green = (60,179,113)
+blue = (0, 0, 200)
+pink = (255,192,203)
+lavender = (221,160,221)
+red = (205,92,92)
 
 # sets display, caption, and clock
 gameDisplay = pygame.display.set_mode((display_width,display_height))
@@ -62,7 +67,7 @@ def startMenu():
             quit()
     
     # clears display, blits title
-    gameDisplay.fill(white)
+    gameDisplay.fill(pink)
     largeText = pygame.font.Font('freesansbold.ttf', 100)
     mediumText = pygame.font.Font('freesansbold.ttf', 50)
     TextSurf, TextRect = text_objects("Trivia Game", largeText)
@@ -70,8 +75,8 @@ def startMenu():
     gameDisplay.blit(TextSurf, TextRect)
 
     # displays buttons that route to different functions
-    button("Enter",250,450,100,50,white,black,numPlayers)
-    button("Quit",450,450,100,50,red,black,quit)
+    button("Enter",250,450,100,50,green,lavender,numPlayers)
+    button("Quit",450,450,100,50,red,lavender,quit)
 
     pygame.display.update()
     clock.tick(15)
@@ -86,7 +91,7 @@ def numPlayers():
     playnum_screen = True
     
     # displays title on screen 
-    gameDisplay.fill(white)
+    gameDisplay.fill(pink)
     largeText = pygame.font.Font('freesansbold.ttf', 60)
     mediumText = pygame.font.Font('freesansbold.ttf', 50)
     TextSurf, TextRect = text_objects("Press '1-4'", largeText)
@@ -121,7 +126,7 @@ def numPlayers():
     gameDisplay.blit(TextSurf2, TextRect2)
 
     # displays button that routes to game
-    button("Start",350,450,100,50,white,black,main)
+    button("Start",350,450,100,50,green,lavender,main)
 
     pygame.display.update()
     clock.tick(15)
