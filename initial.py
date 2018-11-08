@@ -88,6 +88,7 @@ def startMenu():
     clock.tick(15)
 
 player_number = 1
+setNumPlayers(player_number)
 
 def numPlayers():
     global player_number
