@@ -101,6 +101,7 @@ def numPlayers():
             elif event.key == pygame.K_4:
                 player_number = 4
                 print("4")
+            setNumPlayers(player_number)
 
 
     gameDisplay.fill(white)

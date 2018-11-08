@@ -23,6 +23,13 @@ ANSWER = 'answer'
 MC_answer_keys = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4]
 TF_answer_keys = [pygame.K_1, pygame.K_2]
 
+# Set number of players from input at initial.py
+number_players = 0
+def setNumPlayers(num_players):
+    global number_players
+    number_players = num_players
+
+
 #Unit test for the creation of player class
 class testPlayer(unittest.TestCase):
     def setUp(self):
@@ -307,6 +314,7 @@ def main():
     global category_list
     global MC_answer_keys
     global TF_answer_keys
+    global number_players
     # initialize pygame, screen, and caption
     pygame.init()
     screen = pygame.display.set_mode((800, 700))
