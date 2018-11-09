@@ -6,7 +6,12 @@ intro = True
 playnum_screen = False
 
 pygame.init()
- 
+
+# Some snazzy 8 bit Jeopardy Music
+# Music attributed to https://www.youtube.com/watch?v=gSnxvFCEwfE
+mus = pygame.mixer.Sound('8bitJep.wav')
+mus.play(-1)
+
 # size of display screen
 display_width = 800 
 display_height = 700 
