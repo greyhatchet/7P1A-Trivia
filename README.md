@@ -3,9 +3,3 @@ This is a trivia game with pass and play components. There will be multiple cate
 
 This game utilizes a module called pygame and pygame must be installed to run this code. Additional information can be found on Pygame's "Getting Started" page: https://www.pygame.org/wiki/GettingStarted
 
-
-Release 1:
-
-Run Trivia2.py to begin the game. To choose a question, click its box. Then, press the number key corresponding to your
-desired choice to answer the question. The game will then display the correct answer; click the screen or press 'RETURN'
-to go back to the board.
