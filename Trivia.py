@@ -320,7 +320,10 @@ class Jeopardy:
             score = self.smallFont.render(str(player_list[p].getScore()), 1, WHITE)
             self.screen.blit(text, ((p * 200) + 30, 610))
             self.screen.blit(score, ((p * 200) + 30, 650))
-
+        player_scores = []
+        for i in range(number_players):
+            player_scores.append((i, player_list[i].getScore()))
+    
     def getCurQType(self):
         return self.curQ.getType()
 
