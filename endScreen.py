@@ -1,8 +1,7 @@
 import pygame
 
 player_number = 3
-intro = True
-playnum_screen = False
+done = True
 pygame.init()
 
 # size of display screen
@@ -56,9 +55,11 @@ def message_display(text):
     pygame.display.update()
 
 
-def startMenu():
-    global intro
-
+def endMenu():
+    #global player_scores
+    global done
+    done = True
+    #print(player_scores)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -84,15 +85,11 @@ def startMenu():
     button("Quit", 450, 450, 100, 50, red, lavender, quit)
 
     pygame.display.update()
-    clock.tick(15)
 
 
+while done:
+    endMenu()
 
-
-
-
-while intro:
-    startMenu()
 
 
 pygame.quit()
