@@ -1,0 +1,9 @@
+MC; Which Memphis-based group became the first hip-hop act to win an Academy Award in 2006?; ('Wu-Tang Clan', '8Ball & MJG', 'Three 6 Mafia', 'Cash Money Millionaires'); 2;
+
+MC; Which of the following is not an alias used by Long Island-based MC Daniel Dumile?; ('MF DOOM', 'Viktor Vaughn', 'King Geedorah', 'Metal Mask', 'Zev Love X'); 3;
+
+TF; Method Man's solo debut 'Tical' was the first of many side projects by members of the Wu Tang Clan.; 0;
+
+MC; Which of these artists was not a member of the Native Tongues collective?; ('De La Soul', 'Afrika Bambaataa', 'A Tribe Called Quest', 'Jungle Brothers'); 1;
+
+MC; Which of these legendary producers did not appear on Nas' debut album, 'Illmatic'?; ('Large Professor', 'DJ Premier', 'RZA', 'Q-Tip', 'Pete Rock'); 2;

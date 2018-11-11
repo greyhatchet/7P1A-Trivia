@@ -5,9 +5,9 @@ from question_reader import *
 import unittest
 
 # List of categories, used for question loading via question_reader.py, and category names, used for displaying
-category_list = ['test0', 'test1', 'test2', 'test3', 'test4', 'test5']
+category_list = ['hiphop', 'test1', 'test2', 'test3', 'test4', 'test5']
 category_names = ['Hip-hop', 'Test 1', 'Test 2', 'Test 3', 'Test 4', 'Test 5']
-num_questions = 6 # Number of questions per category
+num_questions = 5 # Number of questions per category
 
 # Initialize tuples for use as screen colors
 BLACK = (0, 0, 0)
@@ -26,7 +26,7 @@ QUESTION = 'question'
 ANSWER = 'answer'
 
 # Allowed answer keys for each type of question
-MC_answer_keys = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4]
+MC_answer_keys = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5]
 TF_answer_keys = [pygame.K_1, pygame.K_2]
 
 # Set number of players from input at initial.py
@@ -235,7 +235,7 @@ class Jeopardy:
             # variable contains string with the appropriate point total for the selected question (POINTS)
             points = int(row) * 100
             # if valid screen position selected continue
-            if points != 0:
+            if points != 0 and self.board[int(row)][int(col)] != '':
                 #indexes to current question object
                 self.curQ = self.question_dict[cat][points]
                 #label board location as a used question
