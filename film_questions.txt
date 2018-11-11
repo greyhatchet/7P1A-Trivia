@@ -1,0 +1,9 @@
+MC; Which classic film produces the line "Frankly my dear, I don't give a damn."?; ('Gone with the Wind', 'Casablanca', 'Citizen Kane', 'Sisterhood of the Traveling Pants'); 0;
+
+TF; The actor Boris Karloff is well known for his portroyal of Bram Stoker's Count Dracula.; 0;
+
+MC; What year was Forrest Gump released?; ('1992', '1993', '1994', '1995'); 2;
+
+MC; Which Pixar film took 15 years to receieve a sequel?' ('The Incredibles', 'Toy Story 2', 'Finding Nemo', 'Monsters, Inc.'); 1;
+
+MC; Which of the following films has NOT grossed over $1 Billion worldwide?; ('Zootopia', 'The Dark Knight', 'Harry Potter and the Deathly Hollows - Part 1', 'Alice in Wonderland (2010)'); 2;
