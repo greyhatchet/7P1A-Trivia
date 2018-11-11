@@ -4,8 +4,9 @@ from pygame.locals import *
 from question_reader import *
 import unittest
 
-# List of categories, used for question loading via question_reader.py
+# List of categories, used for question loading via question_reader.py, and category names, used for displaying
 category_list = ['test0', 'test1', 'test2', 'test3', 'test4', 'test5']
+category_names = ['Test 0', 'Test 1', 'Test 2', 'Test 3', 'Test 4', 'Test 5']
 num_questions = 6 # Number of questions per category
 
 # Initialize tuples for use as screen colors
@@ -158,7 +159,7 @@ class Jeopardy:
 
         # load the questions
         for i in range(len(category_list)):
-            self.loadQuestions(category_list[i])
+            self.loadQuestions(category_list[i], category_names[i])
 
         # create gameboard w/ list of keys
         self.board.append(list(self.question_dict.keys()))
@@ -167,13 +168,13 @@ class Jeopardy:
         for p in range(100, 501, 100):
             self.board.append([p] * 6)
 
-    def loadQuestions(self, category):
+    def loadQuestions(self, category, category_name):
         global num_questions
         new_q_info_list = readQuestion(category)
         # check if category key in dictionary already
-        if category not in self.question_dict.keys():
+        if category_name not in self.question_dict.keys():
             #if not, append category input as key into dictionary and the value an empty dictionary
-            self.question_dict[category] = {}
+            self.question_dict[category_name] = {}
 
         for i in range(num_questions):
             #iterate through list of questions create appropriate question type objects w/ point values
@@ -184,7 +185,7 @@ class Jeopardy:
             elif new_question_info[0] == 'TF':
                 new_question = TFQuestion(new_question_info[1], int(new_question_info[2]), new_question_score)
             # set the dictionary key to the current question as it's score, and the value as the question object
-            self.question_dict[category][new_question_score] = new_question
+            self.question_dict[category_name][new_question_score] = new_question
 
     def mouseClick(self, pos):
         # checks game state upon click
