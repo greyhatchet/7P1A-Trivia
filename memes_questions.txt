@@ -1,0 +1,9 @@
+MC; She is very ___ to ME!; ('Funny', 'Gorgeous', 'Nice', 'Lovely'); 1;
+
+MC; Yo, why you eating straight bread?; ('I droped my croissant', 'Its been a rough week', 'Cuz thats all Im makin', 'Little Caesars was closed'); 2;
+
+MC; What I spend on gummies you'll probably spend on gas; ('Glad to hear it', 'OOOK', 'Weird flex, but ok', 'Good for you'); 2;
+
+MC; It is ___ my Dudes; ('Game time', 'Alright', 'Not okay', 'Wednesday'); 3;
+
+MC; Happy birthday, Raven!; ('I cant swim', 'Thanks, mom!', 'Whats my present?', 'I cant believe youve done this'); 0;
