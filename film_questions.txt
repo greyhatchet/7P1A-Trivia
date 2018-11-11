@@ -4,6 +4,6 @@ TF; The actor Boris Karloff is well known for his portroyal of Bram Stoker's Cou
 
 MC; What year was Forrest Gump released?; ('1992', '1993', '1994', '1995'); 2;
 
-MC; Which Pixar film took 15 years to receieve a sequel?' ('The Incredibles', 'Toy Story 2', 'Finding Nemo', 'Monsters, Inc.'); 1;
+MC; Which Pixar film took 15 years to receieve a sequel?; ('The Incredibles', 'Toy Story 2', 'Finding Nemo', 'Monsters, Inc.'); 1;
 
 MC; Which of the following films has NOT grossed over $1 Billion worldwide?; ('Zootopia', 'The Dark Knight', 'Harry Potter and the Deathly Hollows - Part 1', 'Alice in Wonderland (2010)'); 2;
