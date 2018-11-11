@@ -16,6 +16,8 @@ GREEN = (0, 255, 0)
 hardcore_blue = (0, 0, 200)
 blue = (72,61,139)
 
+# Skip used to print multi-line question/answer strings without overlapping
+line_skip = 0
 
 # Constants used to track current game mode for determining what to display
 GAMEBOARD = 'gameboard'
@@ -239,6 +241,7 @@ class Jeopardy:
                 self.mode = QUESTION
 
     def drawTextCentered(self, str, skiperoo=-75):
+        global line_skip
         choperoo = len(str)
 
         font = self.smallFont
@@ -270,20 +273,27 @@ class Jeopardy:
 
         #if string needed to be chopped, call function recursively w/ remainder of string
         if choperoo != len(str):
+            line_skip += cr.height
+            print(line_skip)
             self.drawTextCentered(str[choperoo:], skiperoo + cr.height)
 
     def draw(self):
+        global line_skip
+        line_skip = 0
         #display functions depending on game state
         if self.mode == GAMEBOARD:
             self.drawBoard()
         elif self.mode == QUESTION:
             new_text_list = self.curQ.getQuestionText()
             for i in range(len(new_text_list)):
-                self.drawTextCentered(new_text_list[i], -75 + (i * 40))
+                self.drawTextCentered(new_text_list[i], -75 + line_skip)
+                line_skip += 40
         elif self.mode == ANSWER:
             self.drawTextCentered(self.curQ.getAnswer())
 
     def drawBoard(self):
+        global active_player_num
+
         # Grid display
         xStart, xEnd = 0, 800
         yStart, yEnd = 0, 600
@@ -359,7 +369,6 @@ def main():
     while not quit:
         #framerate
         clock.tick(60)
-        print("Active: Player " + str(active_player_num) + " Score: " + str(player_list[active_player_num].getScore()))
         
         #event handler (X out and escape quit the game)
         for event in pygame.event.get():
