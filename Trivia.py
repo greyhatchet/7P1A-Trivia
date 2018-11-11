@@ -338,6 +338,10 @@ class Jeopardy:
         player_scores = []
         for i in range(number_players):
             player_scores.append((i, player_list[i].getScore()))
+        for i in player_scores:
+            if i[1] >= 1500:
+                #print("game done?" + "Player win = " + str(i[0]))
+                from endScreen import endMenu
     
     def getCurQType(self):
         return self.curQ.getType()
