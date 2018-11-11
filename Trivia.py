@@ -6,7 +6,7 @@ import unittest
 
 # List of categories, used for question loading via question_reader.py, and category names, used for displaying
 category_list = ['test0', 'test1', 'test2', 'test3', 'test4', 'test5']
-category_names = ['Test 0', 'Test 1', 'Test 2', 'Test 3', 'Test 4', 'Test 5']
+category_names = ['Hip-hop', 'Test 1', 'Test 2', 'Test 3', 'Test 4', 'Test 5']
 num_questions = 6 # Number of questions per category
 
 # Initialize tuples for use as screen colors
@@ -151,9 +151,11 @@ class Jeopardy:
     curQ = None # Stores current question object
 
     def __init__(self, screen, category_list):
+        global category_names
         self.screen = screen
 
         # load fonts
+        self.extraSmallFont = pygame.font.Font(None, 36)
         self.smallFont = pygame.font.Font(None, 48)
         self.bigFont = pygame.font.Font(None, 80)
 
@@ -241,7 +243,7 @@ class Jeopardy:
                 #set current state to question
                 self.mode = QUESTION
 
-    def drawTextCentered(self, str, skiperoo=-75):
+    def drawTextCentered(self, str, y_skip=-75, x_skip=0, line_width=0):
         global line_skip
         choperoo = len(str)
 
@@ -251,7 +253,7 @@ class Jeopardy:
         text = font.render(str, 1, WHITE)
 
          # if string too long, break up at first space in the last half of the string
-        while text.get_rect().width > self.screen.get_rect().width:
+        while text.get_rect().width > line_width:
             for c in range(int(choperoo / 2), choperoo):
                 if str[c] == ' ':
                     choperoo = c
@@ -267,7 +269,8 @@ class Jeopardy:
         cr.center = self.screen.get_rect().center
 
         #y coordinate shifted the value inputted (defaults to 75 pixels down)
-        cr.y += skiperoo
+        cr.y += y_skip
+        cr.x += x_skip
 
         # blit text in appropiate position
         self.screen.blit(text, cr)
@@ -275,8 +278,7 @@ class Jeopardy:
         #if string needed to be chopped, call function recursively w/ remainder of string
         if choperoo != len(str):
             line_skip += cr.height
-            print(line_skip)
-            self.drawTextCentered(str[choperoo:], skiperoo + cr.height)
+            self.drawTextCentered(str[choperoo:], y_skip + cr.height, x_skip, line_width)
 
     def draw(self):
         global line_skip
@@ -287,10 +289,10 @@ class Jeopardy:
         elif self.mode == QUESTION:
             new_text_list = self.curQ.getQuestionText()
             for i in range(len(new_text_list)):
-                self.drawTextCentered(new_text_list[i], -75 + line_skip)
+                self.drawTextCentered(new_text_list[i], y_skip=-75 + line_skip, x_skip=0, line_width=self.screen.get_rect().width)
                 line_skip += 40
         elif self.mode == ANSWER:
-            self.drawTextCentered(self.curQ.getAnswer())
+            self.drawTextCentered(self.curQ.getAnswer(), line_width=self.screen.get_rect().width)
 
     def drawBoard(self):
         global active_player_num
@@ -314,7 +316,9 @@ class Jeopardy:
 
             #display column (category) title
             text = self.smallFont.render(self.board[0][x], 1, WHITE)
-            self.screen.blit(text, (x * xStep + 10, 25))
+            if text.get_rect().width > xStep-5:
+                text = self.extraSmallFont.render(self.board[0][x], 1, WHITE)
+            self.screen.blit(text, (x * xStep + 5, 25))
 
             for y in range(1, 6):
                 #display point total
