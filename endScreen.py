@@ -1,4 +1,6 @@
 import pygame
+#not running here
+#print(the_scores)
 
 player_number = 3
 done = True
@@ -65,24 +67,32 @@ def endMenu():
             pygame.quit()
             quit()
 
+    f = open("scores.txt", "r")
+    for i in f:
+        #print("hi")
+        x = i[1:-1]
+        the_scores = x.split(", ")
+    the_scores = [int(x) for x in the_scores]
+
+
     # clears display, blits title
     gameDisplay.fill(pink)
     largeText = pygame.font.Font('mago3.ttf', 100)
     mediumText = pygame.font.Font('mago3.ttf', 50)
-    TextSurf, TextRect = text_objects("Player " + "x" + " wins: " + "score", largeText)
+    TextSurf, TextRect = text_objects("Player " + str(the_scores.index(max(the_scores))) + " wins!", largeText)
     TextRect.center = ((display_width/2), (150))
     gameDisplay.blit(TextSurf, TextRect)
 
 
     # Iterate through each player and
-    for i in range(player_number):
-        textSurf, textRect = text_objects("Player " + str(i) + " loses: " + "score", mediumText)
+    for i in range(len(the_scores)):
+        textSurf, textRect = text_objects("Player " + str(i) + " " + "score: " + str(the_scores[i]), mediumText)
         textRect.center = ((display_width / 2), (250 + (i*50)))
         gameDisplay.blit(textSurf, textRect)
 
     # displays buttons that route to different functions
-    button("Play Again", 250, 450, 100, 50, green, lavender)
-    button("Quit", 450, 450, 100, 50, red, lavender, quit)
+    #button("Play Again", 250, 450, 100, 50, green, lavender)
+    button("Quit", 350, 550, 100, 50, red, lavender, quit)
 
     pygame.display.update()
 
