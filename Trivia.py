@@ -336,11 +336,13 @@ class Jeopardy:
             self.screen.blit(text, ((p * 200) + 30, 610))
             self.screen.blit(score, ((p * 200) + 30, 650))
         player_scores = []
+        f = open("scores.txt", "w")
         for i in range(number_players):
-            player_scores.append((i, player_list[i].getScore()))
+            player_scores.append(player_list[i].getScore())
+        f.write(str(player_scores))
+        f.close()
         for i in player_scores:
-            if i[1] >= 1500:
-                #print("game done?" + "Player win = " + str(i[0]))
+            if i >= 1500:
                 from endScreen import endMenu
     
     def getCurQType(self):
