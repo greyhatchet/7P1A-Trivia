@@ -1,0 +1,9 @@
+MC; What's 9 + 10?; ('21', '20', '19', '18'); 0;
+
+MC; Look at all those...; ('Turkeys', 'Parrots', 'Chickens', 'Pigeons'); 2;
+
+TF; Its Fre Sh A Vocado!; 1;
+
+TF; I could have dropped my croissant!; 1;
+
+MC; How far apart do 2 bros need to be while chillin in the hot tub?; ('2ft', '5ft', 'side by side', 'bros cannot be in the same hot tub'); 1;

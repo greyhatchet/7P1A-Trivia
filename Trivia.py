@@ -5,8 +5,8 @@ from question_reader import *
 import unittest
 
 # List of categories, used for question loading via question_reader.py, and category names, used for displaying
-category_list = ['hiphop', 'film', 'memes', 'test3','test4', 'Dogs']
-category_names = ['Hip-hop', 'Film', 'Memes', 'Test 3','Test4', 'Dogs']
+category_list = ['hiphop', 'film', 'memes', 'test3', 'vines', 'Dogs']
+category_names = ['Hip-hop', 'Film', 'Memes', 'Test 3', 'Vines', 'Dogs']
 num_questions = 5 # Number of questions per category
 
 # Initialize tuples for use as screen colors
@@ -336,15 +336,13 @@ class Jeopardy:
             self.screen.blit(text, ((p * 200) + 30, 610))
             self.screen.blit(score, ((p * 200) + 30, 650))
         player_scores = []
-        f = open("scores.txt", "w")
         for i in range(number_players):
-            player_scores.append(player_list[i].getScore())
-        f.write(str(player_scores))
-        f.close()
+            player_scores.append((i, player_list[i].getScore()))
         for i in player_scores:
-            if i >= 1500:
+            if i[1] >= 1500:
+                #print("game done?" + "Player win = " + str(i[0]))
                 from endScreen import endMenu
-                
+    
     def getCurQType(self):
         return self.curQ.getType()
 
