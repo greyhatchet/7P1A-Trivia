@@ -124,23 +124,28 @@ def howTo():
     gameDisplay.blit(TextSurf1, TextRect1)
 
     # text 2
+    TextSurf6, TextRect6 = text_objects("Use the keyboard to type a number from 1-4 and click 'Start'", mediumText)
+    TextRect6.center = ((display_width / 2), (display_height / 2) - 100)
+    gameDisplay.blit(TextSurf6, TextRect6)
+
+    # text 2
     TextSurf2, TextRect2 = text_objects("Choose a question and use the keyboard to choose your answer", mediumText)
-    TextRect2.center = ((display_width / 2), (display_height / 2) - 100)
+    TextRect2.center = ((display_width / 2), (display_height / 2) - 60)
     gameDisplay.blit(TextSurf2, TextRect2)
 
     # text 3
     TextSurf3, TextRect3 = text_objects("Click the screen or press enter to return to the game board", mediumText)
-    TextRect3.center = ((display_width / 2), (display_height / 2) - 60)
+    TextRect3.center = ((display_width / 2), (display_height / 2) - 20)
     gameDisplay.blit(TextSurf3, TextRect3)
 
     # text 4
     TextSurf4, TextRect4 = text_objects("Pass the keyboard and mouse to the next player and continue playing", smallmedText)
-    TextRect4.center = ((display_width / 2), (display_height / 2) - 20)
+    TextRect4.center = ((display_width / 2), (display_height / 2) + 20)
     gameDisplay.blit(TextSurf4, TextRect4)
 
     # text 5
     TextSurf5, TextRect5 = text_objects("First player to 1500 points wins!", largemedText)
-    TextRect5.center = ((display_width / 2), (display_height / 2) + 60)
+    TextRect5.center = ((display_width / 2), (display_height / 2) + 80)
     gameDisplay.blit(TextSurf5, TextRect5)
 
     button("Select Players", 350, 500, 100, 50, green, lavender, numPlayers)
@@ -179,16 +184,16 @@ def numPlayers():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_1:
                 player_number = 1
-                print("1")
+                #print("1")
             elif event.key == pygame.K_2: 
                 player_number = 2      
-                print("2")     
+                #print("2")
             elif event.key == pygame.K_3:
                 player_number = 3
-                print("3")
+                #print("3")
             elif event.key == pygame.K_4:
                 player_number = 4
-                print("4")
+                #print("4")
             setNumPlayers(player_number)
 
     # displays number of players on screen
@@ -204,13 +209,13 @@ def numPlayers():
 
 
 while intro:
-    print("intro")
+    #print("intro")
     startMenu()
 while how_to:
-    print("how to")
+    #print("how to")
     howTo()
 while playnum_screen:
-    print("player num screen")
+    #print("player num screen")
     numPlayers()
 
 
