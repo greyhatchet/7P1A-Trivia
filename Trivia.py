@@ -5,8 +5,8 @@ from question_reader import *
 import unittest
 
 # List of categories, used for question loading via question_reader.py, and category names, used for displaying
-category_list = ['hiphop', 'film', 'memes', 'test3', 'vines', 'Dogs']
-category_names = ['Hip-hop', 'Film', 'Memes', 'Test 3', 'Vines', 'Dogs']
+category_list = ['hiphop', 'film', 'memes', 'Misc', 'vines', 'Dogs']
+category_names = ['Hip-hop', 'Film', 'Memes', 'Misc', 'Vines', 'Dogs']
 num_questions = 5 # Number of questions per category
 
 # Initialize tuples for use as screen colors
