@@ -329,9 +329,9 @@ class Jeopardy:
         for p in range(0, number_players):
             # active player color
             if p == active_player_num:
-                text = self.smallFont.render("Player " + str(p), 1, RED)
+                text = self.smallFont.render("Player " + str(p+1), 1, RED)
             else:
-                text = self.smallFont.render("Player " + str(p), 1, WHITE)
+                text = self.smallFont.render("Player " + str(p+1), 1, WHITE)
             score = self.smallFont.render(str(player_list[p].getScore()), 1, WHITE)
             self.screen.blit(text, ((p * 200) + 30, 610))
             self.screen.blit(score, ((p * 200) + 30, 650))
