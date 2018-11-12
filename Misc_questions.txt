@@ -1,0 +1,11 @@
+MC; What is the square root of 1?; ('1', '2', '3', 'i'); 0;
+
+TF; Bulgaria is the capital of French Polynesia; 0;
+
+MC; Who is the greatest rapper of all time?; ('Biggie', 'Nas', 'Pusha T', 'Dylan'); 3;
+
+TF; True is the opposite of False; 1;
+
+MC; Which of these answers is the third answer?; ('1', '2', '3', '4'); 2;
+
+TF; Why are you the way that you are?; 0;
