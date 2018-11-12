@@ -79,14 +79,14 @@ def endMenu():
     gameDisplay.fill(pink)
     largeText = pygame.font.Font('mago3.ttf', 100)
     mediumText = pygame.font.Font('mago3.ttf', 50)
-    TextSurf, TextRect = text_objects("Player " + str(the_scores.index(max(the_scores))) + " wins!", largeText)
+    TextSurf, TextRect = text_objects("Player " + str(the_scores.index(max(the_scores)) + 1) + " wins!", largeText)
     TextRect.center = ((display_width/2), (150))
     gameDisplay.blit(TextSurf, TextRect)
 
 
     # Iterate through each player and
     for i in range(len(the_scores)):
-        textSurf, textRect = text_objects("Player " + str(i) + " " + "score: " + str(the_scores[i]), mediumText)
+        textSurf, textRect = text_objects("Player " + str(i+1) + " " + "score: " + str(the_scores[i]), mediumText)
         textRect.center = ((display_width / 2), (250 + (i*50)))
         gameDisplay.blit(textSurf, textRect)
 
